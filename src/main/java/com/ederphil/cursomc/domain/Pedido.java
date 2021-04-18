@@ -1,6 +1,8 @@
 package com.ederphil.cursomc.domain;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -19,16 +22,19 @@ public class Pedido {
 	private Integer id;
 	private Date instante;
 
-	@OneToOne(cascade=CascadeType.ALL, mappedBy = "pedido")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
 	private Pagamento pagamento;
 
 	@ManyToOne
-	@JoinColumn(name="cliente_id")
+	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 
 	@ManyToOne
-	@JoinColumn(name="endereco_entrega_id")
+	@JoinColumn(name = "endereco_entrega_id")
 	private Endereco enderecoEntrega;
+
+	@OneToMany(mappedBy = "id.pedido")
+	private Set<ItemPedido> itensPedido = new HashSet<>();
 
 	public Pedido() {
 
@@ -80,6 +86,14 @@ public class Pedido {
 
 	public void setEnderecoEntrega(Endereco enderecoEntrega) {
 		this.enderecoEntrega = enderecoEntrega;
+	}
+
+	public Set<ItemPedido> getItensPedido() {
+		return itensPedido;
+	}
+
+	public void setItensPedido(Set<ItemPedido> itensPedido) {
+		this.itensPedido = itensPedido;
 	}
 
 	@Override
