@@ -4,21 +4,23 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
 import com.ederphil.cursomc.domain.chave.ItemPedidoPk;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class ItemPedido {
 
+	@JsonIgnore
 	@EmbeddedId
-	private ItemPedidoPk id = new ItemPedidoPk();	
-	
+	private ItemPedidoPk id = new ItemPedidoPk();
+
 	private Double desconto;
 	private Integer quantidade;
 	private Double preco;
-	
+
 	public ItemPedido() {
 		super();
 	}
-	
+
 	public ItemPedido(Pedido pedido, Produto produto, Double desconto, Integer quantidade, Double preco) {
 		super();
 		this.id.setPedido(pedido);
@@ -28,14 +30,15 @@ public class ItemPedido {
 		this.preco = preco;
 	}
 
+	@JsonIgnore
 	public Pedido getPedido() {
 		return id.getPedido();
 	}
-	
+
 	public Produto getProduto() {
 		return id.getProduto();
 	}
-	
+
 	public ItemPedidoPk getId() {
 		return id;
 	}
@@ -92,8 +95,5 @@ public class ItemPedido {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
+
 }
