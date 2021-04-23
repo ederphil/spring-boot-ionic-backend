@@ -1,9 +1,11 @@
 package com.ederphil.cursomc.controller;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ederphil.cursomc.domain.Categoria;
+import com.ederphil.cursomc.dto.CategoriaDTO;
 import com.ederphil.cursomc.service.CategoriaService;
 
 @RestController
@@ -59,6 +62,13 @@ public class CategoriaController {
 		categoriaService.deletar(id);
 		return ResponseEntity.noContent().build();
 
+	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
+		List<Categoria> list = categoriaService.buscarTodos();
+		List<CategoriaDTO> listDto = list.stream().map(categoria -> new CategoriaDTO(categoria)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 
 }
