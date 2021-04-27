@@ -2,14 +2,14 @@ package com.ederphil.cursomc.controller;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,8 +38,9 @@ public class CategoriaController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Categoria categoria) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO categoriaDto) {
 
+		Categoria categoria = categoriaService.fromDTO(categoriaDto);
 		categoria = categoriaService.inserir(categoria);
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.getId())
@@ -83,9 +84,10 @@ public class CategoriaController {
 
 		Page<Categoria> list = categoriaService.findPage(page, linesPage, orderBy, direction);
 		Page<CategoriaDTO> listDto = list.map(categoria -> new CategoriaDTO(categoria));
-		
+
 		return ResponseEntity.ok().body(listDto);
 
 	}
+
 
 }
