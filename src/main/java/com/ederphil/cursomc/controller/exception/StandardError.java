@@ -1,6 +1,8 @@
 package com.ederphil.cursomc.controller.exception;
 
-public class StandardError {
+import java.io.Serializable;
+
+public class StandardError implements Serializable {
 
 	private Integer status;
 	private String msg;
